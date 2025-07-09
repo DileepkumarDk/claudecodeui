@@ -1,19 +1,23 @@
 FROM node:18
 
-# Create working directory
+# Create app working directory
 WORKDIR /app
 
 # Install Claude CLI globally
 RUN npm install -g @anthropic-ai/claude-code
 
-# Copy the app code from GitHub
+# Copy app source code
 COPY . .
 
-# Install app dependencies
+# Install dependencies
 RUN npm install
 
-# Expose the port (Claude UI default)
+# Build the Vite frontend
+RUN npm run build
+
+# Expose the backend server port
 EXPOSE 3001
 
-# Start your app (adjust if needed)
-CMD ["npm", "run", "dev"]
+# Start the backend server (serves built frontend)
+CMD ["node", "server/index.js"]
+
